@@ -2,8 +2,13 @@
   <div id="app">
     <h1 class="h1">Ehealth4Everyone Attendance App</h1>
     <AddVisitors v-on:add-user="addUser" />
-    <Header v-bind:user="userInfo" class="header" v-on:onDelete="deleteData" />
-    <!-- <EditModal v:bind:edituser="userInfo" /> -->
+    <VisitorsList
+      v-bind:users="userInfo"
+      class="header"
+      v-on:onDelete="deleteUser"
+      v-on:onEdit="editUser"
+    />
+    <edit-modal :user="current" v-show="isEditing" v-on:cancelModal="cancelModal" />
     <!-- <vue-particles
       id="particles"
       color="#2c1b40"
@@ -16,22 +21,46 @@
 
 <script>
 import AddVisitors from "./components/AddVisitors.vue";
-import Header from "./components/Header";
-// import EditModal from "./components/EditModal";
+import VisitorsList from "./components/VisitorsList";
+import EditModal from "./components/EditModal";
 export default {
   name: "app",
-  components: { Header, AddVisitors },
+  components: { VisitorsList, AddVisitors, EditModal },
   data() {
     return {
-      userInfo: []
+      userInfo: [],
+      isEditing: false,
+      current: {}
     };
   },
   methods: {
     addUser(inputData) {
       this.userInfo = [...this.userInfo, inputData];
     },
-    deleteData(id) {
+    deleteUser(id) {
       this.userInfo = this.userInfo.filter(e => e.id !== id);
+    },
+    editUser(id) {
+      this.userInfo = this.userInfo.forEach(user => {
+        if (user.id === id) {
+          this.current = user;
+          this.isEditing = true;
+        }
+      });
+    },
+    cancelModal(id) {
+      // console.log(this);
+      let $vm = this;
+      console.log($vm.userInfo);
+      console.log($vm);
+      return () => {
+        $vm.userInfo = $vm.userInfo.forEach(user => {
+          if (user.id === id) {
+            $vm.current = user;
+            $vm.isEditing = false;
+          }
+        });
+      };
     }
   }
 };

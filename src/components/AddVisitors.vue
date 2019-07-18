@@ -1,6 +1,6 @@
 <template>
   <div class="addvisitor">
-    <b-form @submit="onSubmit" @formchange="editUsers" class="text-center w-50 addvisitor">
+    <b-form @submit="onSubmit" class="text-center w-50 addvisitor">
       <b-form-group id="input-group-1" label="Your Name:" label-for="input-1">
         <b-form-input
           id="input-1"
@@ -53,7 +53,7 @@
 <script>
 import uuid from "uuid";
 export default {
-  name: "HelloWorld",
+  name: "AddVisitors",
   props: ["editUser"],
   data() {
     return {
@@ -80,12 +80,6 @@ export default {
       this.form.email = "";
       this.form.address = "";
       this.form.comment = "";
-    },
-    editUsers(editUser) {
-      this.form.name = editUser.name;
-      this.form.email = editUser.email;
-      this.form.address = editUser.address;
-      this.form.comment = editUser.comment;
     }
   }
 };
